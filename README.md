@@ -1,5 +1,3 @@
-# ENS492-Kerem-Arda
-
 # Smart Home Automation Project
 
 ## 📌 Project Overview
