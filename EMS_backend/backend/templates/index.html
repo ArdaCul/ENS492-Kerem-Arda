@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tapo P110 Controller</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            margin: 0;
+            color: #333;
+        }
+        .device-info {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #onButton {
+            background-color: #4CAF50;
+            color: white;
+        }
+        #onButton:hover {
+            background-color: #45a049;
+        }
+        #offButton {
+            background-color: #f44336;
+            color: white;
+        }
+        #offButton:hover {
+            background-color: #d32f2f;
+        }
+        #refreshButton {
+            background-color: #2196F3;
+            color: white;
+        }
+        #refreshButton:hover {
+            background-color: #0b7dda;
+        }
+        .energy-data {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .energy-card {
+            flex: 1;
+            min-width: 150px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .energy-card h3 {
+            margin-top: 0;
+            color: #2e7d32;
+        }
+        .energy-value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .energy-unit {
+            font-size: 14px;
+            color: #666;
+        }
+        .status-indicator {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        .status-on {
+            background-color: #4CAF50;
+        }
+        .status-off {
+            background-color: #f44336;
+        }
+        #loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Tapo P110 Smart Plug Controller</h1>
+        </div>
+
+        <div id="loading">Loading...</div>
+
+        <div id="content" style="display:none;">
+            <div class="device-info">
+                <h2>Device Information</h2>
+                <p><strong>Name:</strong> <span id="deviceName">-</span></p>
+                <p><strong>Status:</strong> <span class="status-indicator" id="statusIndicator"></span><span id="deviceStatus">-</span></p>
+                <p><strong>Model:</strong> <span id="deviceModel">-</span></p>
+                <p><strong>Firmware:</strong> <span id="deviceFirmware">-</span></p>
+            </div>
+
+            <div class="controls">
+                <button id="onButton">Turn ON</button>
+                <button id="offButton">Turn OFF</button>
+                <button id="refreshButton">Refresh Data</button>
+            </div>
+
+            <h2>Energy Consumption</h2>
+            <div class="energy-data">
+                <div class="energy-card">
+                    <h3>Current Power</h3>
+                    <div class="energy-value" id="currentPower">-</div>
+                    <div class="energy-unit">Watts</div>
+                </div>
+                <div class="energy-card">
+                    <h3>Today's Usage</h3>
+                    <div class="energy-value" id="todayEnergy">-</div>
+                    <div class="energy-unit">kWh</div>
+                </div>
+                <div class="energy-card">
+                    <h3>Monthly Usage</h3>
+                    <div class="energy-value" id="monthEnergy">-</div>
+                    <div class="energy-unit">kWh</div>
+                </div>
+            </div>
+
+            <div class="energy-data">
+                <div class="energy-card">
+                    <h3>Today's Runtime</h3>
+                    <div class="energy-value" id="todayRuntime">-</div>
+                    <div class="energy-unit">minutes</div>
+                </div>
+                <div class="energy-card">
+                    <h3>Monthly Runtime</h3>
+                    <div class="energy-value" id="monthRuntime">-</div>
+                    <div class="energy-unit">hours</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initial data load
+            refreshData();
+
+            // Set up button event listeners
+            document.getElementById('onButton').addEventListener('click', function() {
+                setPowerState('on');
+            });
+
+            document.getElementById('offButton').addEventListener('click', function() {
+                setPowerState('off');
+            });
+
+            document.getElementById('refreshButton').addEventListener('click', function() {
+                refreshData();
+            });
+        });
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('content').style.display = 'none';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('content').style.display = 'block';
+        }
+
+        function refreshData() {
+            showLoading();
+            
+            // Fetch device status
+            fetch('/api/status')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert('Error: ' + data.error);
+                        return;
+                    }
+                    
+                    // Update device info
+                    document.getElementById('deviceName').textContent = data.device_name;
+                    document.getElementById('deviceStatus').textContent = data.is_on ? 'ON' : 'OFF';
+                    document.getElementById('statusIndicator').className = 'status-indicator ' + (data.is_on ? 'status-on' : 'status-off');
+                    document.getElementById('deviceModel').textContent = data.model;
+                    document.getElementById('deviceFirmware').textContent = data.firmware_version;
+                    
+                    // Fetch energy data
+                    return fetch('/api/energy');
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Error fetching energy data:', data.error);
+                        return;
+                    }
+                    
+                    // Update energy info
+                    document.getElementById('currentPower').textContent = data.current_power_watts.toFixed(1);
+                    document.getElementById('todayEnergy').textContent = data.today_energy_kwh.toFixed(3);
+                    document.getElementById('monthEnergy').textContent = data.month_energy_kwh.toFixed(2);
+                    document.getElementById('todayRuntime').textContent = Math.round(data.today_runtime / 60);
+                    document.getElementById('monthRuntime').textContent = (data.month_runtime / 3600).toFixed(1);
+                    
+                    hideLoading();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to fetch data. See console for details.');
+                    hideLoading();
+                });
+        }
+
+        function setPowerState(state) {
+            showLoading();
+            
+            fetch(`/api/power/${state}`, {
+                method: 'POST',
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert('Error: ' + data.error);
+                } else {
+                    // Wait a moment for the device to change state
+                    setTimeout(refreshData, 1000);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to set power state. See console for details.');
+                hideLoading();
+            });
+        }
+    </script>
+</body>
+</html>
