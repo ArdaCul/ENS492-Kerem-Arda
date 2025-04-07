@@ -9,7 +9,7 @@ alias deactivate 'test $?_OLD_VIRTUAL_PATH != 0 && setenv PATH "$_OLD_VIRTUAL_PA
 # Unset irrelevant variables.
 deactivate nondestructive
 
-setenv VIRTUAL_ENV /home/keremboncuk/Desktop/Dersler/Bitirme_Github/ENS492-Kerem-Arda/flask_venv
+setenv VIRTUAL_ENV /home/keremboncuk/Desktop/a/new_venv
 
 set _OLD_VIRTUAL_PATH="$PATH"
 setenv PATH "$VIRTUAL_ENV/"bin":$PATH"
@@ -18,8 +18,8 @@ setenv PATH "$VIRTUAL_ENV/"bin":$PATH"
 set _OLD_VIRTUAL_PROMPT="$prompt"
 
 if (! "$?VIRTUAL_ENV_DISABLE_PROMPT") then
-    set prompt = '(flask_venv) '"$prompt"
-    setenv VIRTUAL_ENV_PROMPT '(flask_venv) '
+    set prompt = '(new_venv) '"$prompt"
+    setenv VIRTUAL_ENV_PROMPT '(new_venv) '
 endif
 
 alias pydoc python -m pydoc

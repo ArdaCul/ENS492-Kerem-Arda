@@ -1,4 +1,4 @@
-#!/home/keremboncuk/Desktop/Dersler/Bitirme_Github/ENS492-Kerem-Arda/flask_venv/bin/python3
+#!/home/keremboncuk/Desktop/a/new_venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys
