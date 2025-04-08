@@ -442,8 +442,8 @@ if __name__ == "__main__":
         logger.warning("Running in offline mode")
         
     try:
-        logger.info("Starting Flask server on 0.0.0.0:5000")
-        app.run(host="0.0.0.0", port=5000, debug=True)
+        logger.info("Starting Flask server on 0.0.0.0:5050")
+        app.run(host="0.0.0.0", port=5050, debug=True)
     finally:
         logger.info("Shutting down and cleaning up resources")
         cleanup()

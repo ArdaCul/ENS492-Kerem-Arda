@@ -58,3 +58,159 @@
 2025-04-08 12:41:50,012 - __main__ - INFO - Connection test successful, updating credentials
 2025-04-08 12:41:50,013 - __main__ - INFO - Configuration saved to file
 2025-04-08 12:41:50,013 - __main__ - ERROR - Connection test failed: This event loop is already running
+2025-04-08 12:45:33,775 - __main__ - INFO - Configuration loaded from file
+2025-04-08 12:45:33,776 - __main__ - INFO - ==================================================
+2025-04-08 12:45:33,776 - __main__ - INFO - Starting Tapo P110 Controller App
+2025-04-08 12:45:33,776 - __main__ - INFO - Python version: 3.13.0 (main, Oct  7 2024, 05:02:14) [Clang 15.0.0 (clang-1500.3.9.4)]
+2025-04-08 12:45:33,824 - __main__ - INFO - Platform: macOS-15.3.2-arm64-arm-64bit-Mach-O
+2025-04-08 12:45:33,824 - __main__ - INFO - Device IP: 172.20.10.2
+2025-04-08 12:45:33,824 - __main__ - INFO - ==================================================
+2025-04-08 12:45:33,824 - __main__ - INFO - Initializing device connection...
+2025-04-08 12:45:33,824 - __main__ - INFO - Attempting to connect to Tapo device at IP: 172.20.10.2
+2025-04-08 12:45:33,825 - __main__ - INFO - API client created successfully
+2025-04-08 12:45:33,872 - __main__ - INFO - Successfully connected to Tapo P110 at 172.20.10.2
+2025-04-08 12:45:33,872 - __main__ - ERROR - Error during initialization: An asyncio.Future, a coroutine or an awaitable is required
+2025-04-08 12:45:33,872 - __main__ - WARNING - Running in offline mode
+2025-04-08 12:45:33,872 - __main__ - INFO - Starting Flask server on 0.0.0.0:5000
+2025-04-08 12:45:33,899 - __main__ - INFO - Shutting down and cleaning up resources
+2025-04-08 12:46:25,215 - __main__ - INFO - Configuration loaded from file
+2025-04-08 12:46:25,216 - __main__ - INFO - ==================================================
+2025-04-08 12:46:25,216 - __main__ - INFO - Starting Tapo P110 Controller App
+2025-04-08 12:46:25,216 - __main__ - INFO - Python version: 3.13.0 (main, Oct  7 2024, 05:02:14) [Clang 15.0.0 (clang-1500.3.9.4)]
+2025-04-08 12:46:25,227 - __main__ - INFO - Platform: macOS-15.3.2-arm64-arm-64bit-Mach-O
+2025-04-08 12:46:25,227 - __main__ - INFO - Device IP: 172.20.10.2
+2025-04-08 12:46:25,227 - __main__ - INFO - ==================================================
+2025-04-08 12:46:25,227 - __main__ - INFO - Initializing device connection...
+2025-04-08 12:46:25,227 - __main__ - INFO - Attempting to connect to Tapo device at IP: 172.20.10.2
+2025-04-08 12:46:25,227 - __main__ - INFO - API client created successfully
+2025-04-08 12:46:25,288 - __main__ - INFO - Successfully connected to Tapo P110 at 172.20.10.2
+2025-04-08 12:46:25,288 - __main__ - ERROR - Error during initialization: An asyncio.Future, a coroutine or an awaitable is required
+2025-04-08 12:46:25,288 - __main__ - WARNING - Running in offline mode
+2025-04-08 12:46:25,288 - __main__ - INFO - Starting Flask server on 0.0.0.0:5050
+2025-04-08 12:46:25,441 - __main__ - INFO - Configuration loaded from file
+2025-04-08 12:46:25,442 - __main__ - INFO - ==================================================
+2025-04-08 12:46:25,442 - __main__ - INFO - Starting Tapo P110 Controller App
+2025-04-08 12:46:25,442 - __main__ - INFO - Python version: 3.13.0 (main, Oct  7 2024, 05:02:14) [Clang 15.0.0 (clang-1500.3.9.4)]
+2025-04-08 12:46:25,449 - __main__ - INFO - Platform: macOS-15.3.2-arm64-arm-64bit-Mach-O
+2025-04-08 12:46:25,449 - __main__ - INFO - Device IP: 172.20.10.2
+2025-04-08 12:46:25,449 - __main__ - INFO - ==================================================
+2025-04-08 12:46:25,449 - __main__ - INFO - Initializing device connection...
+2025-04-08 12:46:25,449 - __main__ - INFO - Attempting to connect to Tapo device at IP: 172.20.10.2
+2025-04-08 12:46:25,449 - __main__ - INFO - API client created successfully
+2025-04-08 12:46:25,496 - __main__ - INFO - Successfully connected to Tapo P110 at 172.20.10.2
+2025-04-08 12:46:25,496 - __main__ - ERROR - Error during initialization: An asyncio.Future, a coroutine or an awaitable is required
+2025-04-08 12:46:25,496 - __main__ - WARNING - Running in offline mode
+2025-04-08 12:46:25,496 - __main__ - INFO - Starting Flask server on 0.0.0.0:5050
+2025-04-08 12:46:39,844 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:46:39,844 - __main__ - INFO - Requesting device info from Tapo device
+2025-04-08 12:46:39,873 - __main__ - INFO - Successfully received device info
+2025-04-08 12:46:39,874 - __main__ - INFO - Extracted status: device_name=Akıllı Priz, is_on=True
+2025-04-08 12:46:46,194 - __main__ - INFO - Shutting down and cleaning up resources
+2025-04-08 12:46:46,368 - __main__ - INFO - Configuration loaded from file
+2025-04-08 12:46:46,369 - __main__ - INFO - ==================================================
+2025-04-08 12:46:46,369 - __main__ - INFO - Starting Tapo P110 Controller App
+2025-04-08 12:46:46,369 - __main__ - INFO - Python version: 3.13.0 (main, Oct  7 2024, 05:02:14) [Clang 15.0.0 (clang-1500.3.9.4)]
+2025-04-08 12:46:46,379 - __main__ - INFO - Platform: macOS-15.3.2-arm64-arm-64bit-Mach-O
+2025-04-08 12:46:46,379 - __main__ - INFO - Device IP: 172.20.10.2
+2025-04-08 12:46:46,379 - __main__ - INFO - ==================================================
+2025-04-08 12:46:46,379 - __main__ - INFO - Initializing device connection...
+2025-04-08 12:46:46,379 - __main__ - INFO - Attempting to connect to Tapo device at IP: 172.20.10.2
+2025-04-08 12:46:46,380 - __main__ - INFO - API client created successfully
+2025-04-08 12:46:46,422 - __main__ - INFO - Successfully connected to Tapo P110 at 172.20.10.2
+2025-04-08 12:46:46,422 - __main__ - ERROR - Error during initialization: An asyncio.Future, a coroutine or an awaitable is required
+2025-04-08 12:46:46,423 - __main__ - WARNING - Running in offline mode
+2025-04-08 12:46:46,423 - __main__ - INFO - Starting Flask server on 0.0.0.0:5050
+2025-04-08 12:50:46,419 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:50:46,430 - __main__ - INFO - Requesting device info from Tapo device
+2025-04-08 12:50:46,478 - __main__ - ERROR - Failed to get device status: Tapo(SessionTimeout)
+2025-04-08 12:50:46,500 - __main__ - ERROR - Failed to get energy data: Tapo(SessionTimeout)
+2025-04-08 12:51:28,722 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:51:28,723 - __main__ - INFO - Requesting device info from Tapo device
+2025-04-08 12:51:28,742 - __main__ - ERROR - Failed to get device status: Tapo(SessionTimeout)
+2025-04-08 12:51:28,761 - __main__ - ERROR - Failed to get energy data: Tapo(SessionTimeout)
+2025-04-08 12:52:58,412 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:52:58,412 - __main__ - INFO - Requesting device info from Tapo device
+2025-04-08 12:52:58,449 - __main__ - ERROR - Failed to get device status: Tapo(SessionTimeout)
+2025-04-08 12:52:58,472 - __main__ - ERROR - Failed to get energy data: Tapo(SessionTimeout)
+2025-04-08 12:54:13,811 - __main__ - ERROR - Failed to set power state: Tapo(SessionTimeout)
+2025-04-08 12:54:14,821 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:54:14,822 - __main__ - INFO - Requesting device info from Tapo device
+2025-04-08 12:54:14,834 - __main__ - ERROR - Failed to get device status: Tapo(SessionTimeout)
+2025-04-08 12:54:14,852 - __main__ - ERROR - Failed to get energy data: Tapo(SessionTimeout)
+2025-04-08 12:54:21,927 - __main__ - ERROR - Failed to set power state: Tapo(SessionTimeout)
+2025-04-08 12:54:22,934 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:54:22,935 - __main__ - INFO - Requesting device info from Tapo device
+2025-04-08 12:54:22,945 - __main__ - ERROR - Failed to get device status: Tapo(SessionTimeout)
+2025-04-08 12:54:22,961 - __main__ - ERROR - Failed to get energy data: Tapo(SessionTimeout)
+2025-04-08 12:54:26,992 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:54:26,992 - __main__ - INFO - Requesting device info from Tapo device
+2025-04-08 12:54:27,012 - __main__ - ERROR - Failed to get device status: Tapo(SessionTimeout)
+2025-04-08 12:54:27,027 - __main__ - ERROR - Failed to get energy data: Tapo(SessionTimeout)
+2025-04-08 12:54:28,758 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:54:28,758 - __main__ - INFO - Requesting device info from Tapo device
+2025-04-08 12:54:28,768 - __main__ - ERROR - Failed to get device status: Tapo(SessionTimeout)
+2025-04-08 12:54:28,781 - __main__ - ERROR - Failed to get energy data: Tapo(SessionTimeout)
+2025-04-08 12:54:29,751 - __main__ - ERROR - Failed to set power state: Tapo(SessionTimeout)
+2025-04-08 12:54:30,759 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:54:30,760 - __main__ - INFO - Requesting device info from Tapo device
+2025-04-08 12:54:30,779 - __main__ - ERROR - Failed to get device status: Tapo(SessionTimeout)
+2025-04-08 12:54:30,793 - __main__ - ERROR - Failed to get energy data: Tapo(SessionTimeout)
+2025-04-08 12:54:42,684 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:54:42,684 - __main__ - INFO - Requesting device info from Tapo device
+2025-04-08 12:54:42,701 - __main__ - ERROR - Failed to get device status: Tapo(SessionTimeout)
+2025-04-08 12:54:42,721 - __main__ - ERROR - Failed to get energy data: Tapo(SessionTimeout)
+2025-04-08 12:54:44,968 - __main__ - ERROR - Failed to set power state: Tapo(SessionTimeout)
+2025-04-08 12:54:45,976 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:54:45,976 - __main__ - INFO - Requesting device info from Tapo device
+2025-04-08 12:54:45,987 - __main__ - ERROR - Failed to get device status: Tapo(SessionTimeout)
+2025-04-08 12:54:46,007 - __main__ - ERROR - Failed to get energy data: Tapo(SessionTimeout)
+2025-04-08 12:55:01,481 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:55:01,481 - __main__ - INFO - Requesting device info from Tapo device
+2025-04-08 12:55:01,524 - __main__ - ERROR - Failed to get device status: Tapo(SessionTimeout)
+2025-04-08 12:55:01,543 - __main__ - ERROR - Failed to get energy data: Tapo(SessionTimeout)
+2025-04-08 12:55:03,931 - __main__ - ERROR - Failed to set power state: Tapo(SessionTimeout)
+2025-04-08 12:55:04,937 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:55:04,938 - __main__ - INFO - Requesting device info from Tapo device
+2025-04-08 12:55:04,975 - __main__ - ERROR - Failed to get device status: Tapo(SessionTimeout)
+2025-04-08 12:55:04,991 - __main__ - ERROR - Failed to get energy data: Tapo(SessionTimeout)
+2025-04-08 12:55:12,209 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:55:12,210 - __main__ - INFO - Requesting device info from Tapo device
+2025-04-08 12:55:12,223 - __main__ - ERROR - Failed to get device status: Tapo(SessionTimeout)
+2025-04-08 12:55:12,244 - __main__ - ERROR - Failed to get energy data: Tapo(SessionTimeout)
+2025-04-08 12:55:13,744 - __main__ - ERROR - Failed to set power state: Tapo(SessionTimeout)
+2025-04-08 12:55:14,753 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:55:14,753 - __main__ - INFO - Requesting device info from Tapo device
+2025-04-08 12:55:14,763 - __main__ - ERROR - Failed to get device status: Tapo(SessionTimeout)
+2025-04-08 12:55:14,781 - __main__ - ERROR - Failed to get energy data: Tapo(SessionTimeout)
+2025-04-08 12:55:15,722 - __main__ - ERROR - Failed to set power state: Tapo(SessionTimeout)
+2025-04-08 12:55:16,730 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:55:16,731 - __main__ - INFO - Requesting device info from Tapo device
+2025-04-08 12:55:16,741 - __main__ - ERROR - Failed to get device status: Tapo(SessionTimeout)
+2025-04-08 12:55:16,757 - __main__ - ERROR - Failed to get energy data: Tapo(SessionTimeout)
+2025-04-08 12:55:17,153 - __main__ - ERROR - Failed to set power state: Tapo(SessionTimeout)
+2025-04-08 12:55:18,159 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:55:18,159 - __main__ - INFO - Requesting device info from Tapo device
+2025-04-08 12:55:18,169 - __main__ - ERROR - Failed to get device status: Tapo(SessionTimeout)
+2025-04-08 12:55:18,184 - __main__ - ERROR - Failed to get energy data: Tapo(SessionTimeout)
+2025-04-08 12:55:27,641 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:55:27,641 - __main__ - INFO - Requesting device info from Tapo device
+2025-04-08 12:55:27,659 - __main__ - ERROR - Failed to get device status: Tapo(SessionTimeout)
+2025-04-08 12:55:27,674 - __main__ - ERROR - Failed to get energy data: Tapo(SessionTimeout)
+2025-04-08 12:55:32,810 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:55:32,810 - __main__ - INFO - Requesting device info from Tapo device
+2025-04-08 12:55:33,177 - __main__ - ERROR - Failed to get device status: Tapo(SessionTimeout)
+2025-04-08 12:55:33,324 - __main__ - ERROR - Failed to get energy data: Tapo(SessionTimeout)
+2025-04-08 12:56:04,382 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:56:04,382 - __main__ - INFO - Requesting device info from Tapo device
+2025-04-08 12:56:04,396 - __main__ - ERROR - Failed to get device status: Tapo(SessionTimeout)
+2025-04-08 12:56:04,416 - __main__ - ERROR - Failed to get energy data: Tapo(SessionTimeout)
+2025-04-08 12:56:25,865 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:56:25,865 - __main__ - INFO - Requesting device info from Tapo device
+2025-04-08 12:56:25,887 - __main__ - ERROR - Failed to get device status: Tapo(SessionTimeout)
+2025-04-08 12:56:25,905 - __main__ - ERROR - Failed to get energy data: Tapo(SessionTimeout)
+2025-04-08 12:57:08,473 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:57:08,473 - __main__ - INFO - Requesting device info from Tapo device
+2025-04-08 12:57:08,484 - __main__ - ERROR - Failed to get device status: Tapo(SessionTimeout)
+2025-04-08 12:57:08,502 - __main__ - ERROR - Failed to get energy data: Tapo(SessionTimeout)
+2025-04-08 12:57:25,232 - __main__ - INFO - Shutting down and cleaning up resources
+2025-04-08 12:57:25,309 - __main__ - INFO - Shutting down and cleaning up resources
