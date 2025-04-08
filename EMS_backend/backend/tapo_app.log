@@ -1,0 +1,60 @@
+2025-04-08 12:29:53,748 - __main__ - INFO - No configuration file found, using defaults
+2025-04-08 12:29:53,760 - __main__ - INFO - ==================================================
+2025-04-08 12:29:53,760 - __main__ - INFO - Starting Tapo P110 Controller App
+2025-04-08 12:29:53,761 - __main__ - INFO - Python version: 3.12.3 (main, Feb  4 2025, 14:48:35) [GCC 13.3.0]
+2025-04-08 12:29:53,764 - __main__ - INFO - Platform: Linux-6.8.0-57-generic-x86_64-with-glibc2.39
+2025-04-08 12:35:32,316 - __main__ - INFO - No configuration file found, using defaults
+2025-04-08 12:35:32,320 - __main__ - INFO - ==================================================
+2025-04-08 12:35:32,320 - __main__ - INFO - Starting Tapo P110 Controller App
+2025-04-08 12:35:32,320 - __main__ - INFO - Python version: 3.12.3 (main, Feb  4 2025, 14:48:35) [GCC 13.3.0]
+2025-04-08 12:35:32,322 - __main__ - INFO - Platform: Linux-6.8.0-57-generic-x86_64-with-glibc2.39
+2025-04-08 12:40:53,288 - __main__ - INFO - No configuration file found, using defaults
+2025-04-08 12:40:53,291 - __main__ - INFO - ==================================================
+2025-04-08 12:40:53,292 - __main__ - INFO - Starting Tapo P110 Controller App
+2025-04-08 12:40:53,292 - __main__ - INFO - Python version: 3.12.3 (main, Feb  4 2025, 14:48:35) [GCC 13.3.0]
+2025-04-08 12:40:53,293 - __main__ - INFO - Platform: Linux-6.8.0-57-generic-x86_64-with-glibc2.39
+2025-04-08 12:40:53,293 - __main__ - INFO - Device IP: 172.20.10.2
+2025-04-08 12:40:53,294 - __main__ - INFO - ==================================================
+2025-04-08 12:40:53,294 - __main__ - INFO - Initializing device connection...
+2025-04-08 12:40:53,294 - __main__ - INFO - Attempting to connect to Tapo device at IP: 172.20.10.2
+2025-04-08 12:40:53,294 - __main__ - INFO - API client created successfully
+2025-04-08 12:40:53,335 - __main__ - ERROR - Failed to connect to device: Tapo(InvalidCredentials)
+2025-04-08 12:40:53,335 - __main__ - ERROR - Authentication failed - please check your Tapo username and password
+2025-04-08 12:40:53,335 - __main__ - ERROR - Error during initialization: An asyncio.Future, a coroutine or an awaitable is required
+2025-04-08 12:40:53,335 - __main__ - WARNING - Running in offline mode
+2025-04-08 12:40:53,336 - __main__ - INFO - Starting Flask server on 0.0.0.0:5000
+2025-04-08 12:40:53,652 - __main__ - INFO - No configuration file found, using defaults
+2025-04-08 12:40:53,655 - __main__ - INFO - ==================================================
+2025-04-08 12:40:53,655 - __main__ - INFO - Starting Tapo P110 Controller App
+2025-04-08 12:40:53,656 - __main__ - INFO - Python version: 3.12.3 (main, Feb  4 2025, 14:48:35) [GCC 13.3.0]
+2025-04-08 12:40:53,657 - __main__ - INFO - Platform: Linux-6.8.0-57-generic-x86_64-with-glibc2.39
+2025-04-08 12:40:53,657 - __main__ - INFO - Device IP: 172.20.10.2
+2025-04-08 12:40:53,658 - __main__ - INFO - ==================================================
+2025-04-08 12:40:53,658 - __main__ - INFO - Initializing device connection...
+2025-04-08 12:40:53,658 - __main__ - INFO - Attempting to connect to Tapo device at IP: 172.20.10.2
+2025-04-08 12:40:53,658 - __main__ - INFO - API client created successfully
+2025-04-08 12:40:53,686 - __main__ - ERROR - Failed to connect to device: Tapo(InvalidCredentials)
+2025-04-08 12:40:53,686 - __main__ - ERROR - Authentication failed - please check your Tapo username and password
+2025-04-08 12:40:53,686 - __main__ - ERROR - Error during initialization: An asyncio.Future, a coroutine or an awaitable is required
+2025-04-08 12:40:53,686 - __main__ - WARNING - Running in offline mode
+2025-04-08 12:40:53,686 - __main__ - INFO - Starting Flask server on 0.0.0.0:5000
+2025-04-08 12:41:08,845 - __main__ - INFO - No valid configuration found, redirecting to settings
+2025-04-08 12:41:26,417 - __main__ - INFO - Received settings update request for device IP: 172.20.10.2
+2025-04-08 12:41:26,418 - __main__ - INFO - Testing connection with new credentials to 172.20.10.2
+2025-04-08 12:41:27,654 - __main__ - INFO - Connection test successful, updating credentials
+2025-04-08 12:41:27,654 - __main__ - INFO - Configuration saved to file
+2025-04-08 12:41:27,655 - __main__ - ERROR - Connection test failed: This event loop is already running
+2025-04-08 12:41:34,697 - __main__ - INFO - Received settings update request for device IP: 172.20.10.2
+2025-04-08 12:41:34,698 - __main__ - INFO - Testing connection with new credentials to 172.20.10.2
+2025-04-08 12:41:34,750 - __main__ - INFO - Connection test successful, updating credentials
+2025-04-08 12:41:34,750 - __main__ - INFO - Configuration saved to file
+2025-04-08 12:41:34,751 - __main__ - ERROR - Connection test failed: This event loop is already running
+2025-04-08 12:41:37,093 - __main__ - INFO - API: /api/status requested
+2025-04-08 12:41:37,093 - __main__ - INFO - Device not available - attempting to initialize connection
+2025-04-08 12:41:37,094 - __main__ - ERROR - Error during device initialization in status check: This event loop is already running
+2025-04-08 12:41:37,118 - __main__ - ERROR - Error initializing device: This event loop is already running
+2025-04-08 12:41:49,939 - __main__ - INFO - Received settings update request for device IP: 172.20.10.2
+2025-04-08 12:41:49,939 - __main__ - INFO - Testing connection with new credentials to 172.20.10.2
+2025-04-08 12:41:50,012 - __main__ - INFO - Connection test successful, updating credentials
+2025-04-08 12:41:50,013 - __main__ - INFO - Configuration saved to file
+2025-04-08 12:41:50,013 - __main__ - ERROR - Connection test failed: This event loop is already running

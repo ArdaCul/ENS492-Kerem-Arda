@@ -34,6 +34,13 @@
             background-color: #f9f9f9;
             border-radius: 6px;
         }
+        .device-offline {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #ffebee;
+            border-radius: 6px;
+            border: 1px solid #ffcdd2;
+        }
         .controls {
             display: flex;
             gap: 10px;
@@ -47,18 +54,23 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
+        button:disabled {
+            background-color: #cccccc;
+            color: #666666;
+            cursor: not-allowed;
+        }
         #onButton {
             background-color: #4CAF50;
             color: white;
         }
-        #onButton:hover {
+        #onButton:hover:not(:disabled) {
             background-color: #45a049;
         }
         #offButton {
             background-color: #f44336;
             color: white;
         }
-        #offButton:hover {
+        #offButton:hover:not(:disabled) {
             background-color: #d32f2f;
         }
         #refreshButton {
@@ -82,9 +94,16 @@
             border-radius: 6px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
+        .energy-card.offline {
+            background-color: #f5f5f5;
+            color: #757575;
+        }
         .energy-card h3 {
             margin-top: 0;
             color: #2e7d32;
+        }
+        .energy-card.offline h3 {
+            color: #757575;
         }
         .energy-value {
             font-size: 24px;
@@ -107,10 +126,32 @@
         .status-off {
             background-color: #f44336;
         }
+        .status-offline {
+            background-color: #9e9e9e;
+        }
         #loading {
             text-align: center;
             padding: 20px;
             display: none;
+        }
+        #connectionStatus {
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .connection-offline {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        .connection-online {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        .connection-error {
+            background-color: #fff3e0;
+            color: #e65100;
         }
     </style>
 </head>
@@ -118,12 +159,21 @@
     <div class="container">
         <div class="header">
             <h1>Tapo P110 Smart Plug Controller</h1>
+            <a href="/settings" style="text-decoration: none;">
+                <button style="background-color: #607d8b; color: white;">
+                    <span style="display: inline-block; vertical-align: middle;">⚙️</span> Settings
+                </button>
+            </a>
         </div>
 
         <div id="loading">Loading...</div>
 
         <div id="content" style="display:none;">
-            <div class="device-info">
+            <div id="connectionStatus" class="connection-offline">
+                Device Status: Offline
+            </div>
+            
+            <div id="deviceInfoContainer" class="device-info">
                 <h2>Device Information</h2>
                 <p><strong>Name:</strong> <span id="deviceName">-</span></p>
                 <p><strong>Status:</strong> <span class="status-indicator" id="statusIndicator"></span><span id="deviceStatus">-</span></p>
@@ -132,24 +182,24 @@
             </div>
 
             <div class="controls">
-                <button id="onButton">Turn ON</button>
-                <button id="offButton">Turn OFF</button>
+                <button id="onButton" disabled>Turn ON</button>
+                <button id="offButton" disabled>Turn OFF</button>
                 <button id="refreshButton">Refresh Data</button>
             </div>
 
             <h2>Energy Consumption</h2>
             <div class="energy-data">
-                <div class="energy-card">
+                <div class="energy-card" id="currentPowerCard">
                     <h3>Current Power</h3>
                     <div class="energy-value" id="currentPower">-</div>
                     <div class="energy-unit">Watts</div>
                 </div>
-                <div class="energy-card">
+                <div class="energy-card" id="todayEnergyCard">
                     <h3>Today's Usage</h3>
                     <div class="energy-value" id="todayEnergy">-</div>
                     <div class="energy-unit">kWh</div>
                 </div>
-                <div class="energy-card">
+                <div class="energy-card" id="monthEnergyCard">
                     <h3>Monthly Usage</h3>
                     <div class="energy-value" id="monthEnergy">-</div>
                     <div class="energy-unit">kWh</div>
@@ -157,12 +207,12 @@
             </div>
 
             <div class="energy-data">
-                <div class="energy-card">
+                <div class="energy-card" id="todayRuntimeCard">
                     <h3>Today's Runtime</h3>
                     <div class="energy-value" id="todayRuntime">-</div>
                     <div class="energy-unit">minutes</div>
                 </div>
-                <div class="energy-card">
+                <div class="energy-card" id="monthRuntimeCard">
                     <h3>Monthly Runtime</h3>
                     <div class="energy-value" id="monthRuntime">-</div>
                     <div class="energy-unit">hours</div>
@@ -173,10 +223,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Initial data load
             refreshData();
 
-            // Set up button event listeners
             document.getElementById('onButton').addEventListener('click', function() {
                 setPowerState('on');
             });
@@ -200,47 +248,103 @@
             document.getElementById('content').style.display = 'block';
         }
 
+        function updateConnectionStatus(status, message) {
+            const statusElement = document.getElementById('connectionStatus');
+            statusElement.className = '';
+            
+            const onButton = document.getElementById('onButton');
+            const offButton = document.getElementById('offButton');
+            
+            if (status === 'online') {
+                statusElement.classList.add('connection-online');
+                statusElement.textContent = 'Device Status: Online';
+                onButton.disabled = false;
+                offButton.disabled = false;
+            } else if (status === 'offline') {
+                statusElement.classList.add('connection-offline');
+                statusElement.textContent = 'Device Status: Offline - Unable to connect to device';
+                onButton.disabled = true;
+                offButton.disabled = true;
+                setEnergyCardsOffline();
+            } else if (status === 'error') {
+                statusElement.classList.add('connection-error');
+                statusElement.textContent = 'Device Status: Error - ' + (message || 'Unknown error');
+                onButton.disabled = true;
+                offButton.disabled = true;
+                setEnergyCardsOffline();
+            }
+            
+            const deviceInfoContainer = document.getElementById('deviceInfoContainer');
+            if (status === 'online') {
+                deviceInfoContainer.className = 'device-info';
+            } else {
+                deviceInfoContainer.className = 'device-offline';
+            }
+        }
+        
+        function setEnergyCardsOffline() {
+            const energyCards = document.querySelectorAll('.energy-card');
+            energyCards.forEach(card => {
+                card.classList.add('offline');
+            });
+        }
+        
+        function setEnergyCardsOnline() {
+            const energyCards = document.querySelectorAll('.energy-card');
+            energyCards.forEach(card => {
+                card.classList.remove('offline');
+            });
+        }
+
         function refreshData() {
             showLoading();
             
-            // Fetch device status
             fetch('/api/status')
                 .then(response => response.json())
                 .then(data => {
-                    if (data.error) {
-                        alert('Error: ' + data.error);
-                        return;
+                    updateConnectionStatus(data.status || 'offline', data.error_message);
+                    
+                    document.getElementById('deviceName').textContent = data.device_name || 'Unknown';
+                    
+                    if (data.status === 'online') {
+                        document.getElementById('deviceStatus').textContent = data.is_on ? 'ON' : 'OFF';
+                        document.getElementById('statusIndicator').className = 'status-indicator ' + (data.is_on ? 'status-on' : 'status-off');
+                    } else {
+                        document.getElementById('deviceStatus').textContent = 'OFFLINE';
+                        document.getElementById('statusIndicator').className = 'status-indicator status-offline';
                     }
                     
-                    // Update device info
-                    document.getElementById('deviceName').textContent = data.device_name;
-                    document.getElementById('deviceStatus').textContent = data.is_on ? 'ON' : 'OFF';
-                    document.getElementById('statusIndicator').className = 'status-indicator ' + (data.is_on ? 'status-on' : 'status-off');
-                    document.getElementById('deviceModel').textContent = data.model;
-                    document.getElementById('deviceFirmware').textContent = data.firmware_version;
+                    document.getElementById('deviceModel').textContent = data.model || 'Unknown';
+                    document.getElementById('deviceFirmware').textContent = data.firmware_version || 'Unknown';
                     
-                    // Fetch energy data
                     return fetch('/api/energy');
                 })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.error) {
-                        console.error('Error fetching energy data:', data.error);
-                        return;
+                    if (data.status === 'online') {
+                        setEnergyCardsOnline();
+                        
+                        document.getElementById('currentPower').textContent = data.current_power_watts.toFixed(1);
+                        document.getElementById('todayEnergy').textContent = data.today_energy_kwh.toFixed(3);
+                        document.getElementById('monthEnergy').textContent = data.month_energy_kwh.toFixed(2);
+                        document.getElementById('todayRuntime').textContent = Math.round(data.today_runtime / 60);
+                        document.getElementById('monthRuntime').textContent = (data.month_runtime / 3600).toFixed(1);
+                    } else {
+                        setEnergyCardsOffline();
+                        
+                        document.getElementById('currentPower').textContent = '0.0';
+                        document.getElementById('todayEnergy').textContent = '0.000';
+                        document.getElementById('monthEnergy').textContent = '0.00';
+                        document.getElementById('todayRuntime').textContent = '0';
+                        document.getElementById('monthRuntime').textContent = '0.0';
                     }
-                    
-                    // Update energy info
-                    document.getElementById('currentPower').textContent = data.current_power_watts.toFixed(1);
-                    document.getElementById('todayEnergy').textContent = data.today_energy_kwh.toFixed(3);
-                    document.getElementById('monthEnergy').textContent = data.month_energy_kwh.toFixed(2);
-                    document.getElementById('todayRuntime').textContent = Math.round(data.today_runtime / 60);
-                    document.getElementById('monthRuntime').textContent = (data.month_runtime / 3600).toFixed(1);
                     
                     hideLoading();
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Failed to fetch data. See console for details.');
+                    updateConnectionStatus('error', 'Failed to fetch data. See console for details.');
+                    setEnergyCardsOffline();
                     hideLoading();
                 });
         }
@@ -255,6 +359,10 @@
             .then(data => {
                 if (data.error) {
                     alert('Error: ' + data.error);
+                    updateConnectionStatus('error', data.error);
+                } else if (data.status === 'offline') {
+                    updateConnectionStatus('offline');
+                    alert('Device is offline. Cannot change power state.');
                 } else {
                     // Wait a moment for the device to change state
                     setTimeout(refreshData, 1000);
@@ -263,6 +371,7 @@
             .catch(error => {
                 console.error('Error:', error);
                 alert('Failed to set power state. See console for details.');
+                updateConnectionStatus('error', 'Failed to set power state');
                 hideLoading();
             });
         }
