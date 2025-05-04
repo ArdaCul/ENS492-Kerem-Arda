@@ -1,0 +1,14 @@
+{
+    "real_devices": [],
+    "mock_devices": [
+        {
+            "id": "mock-device-tu0go5ee",
+            "name": "Demo1",
+            "type": "refrigerator",
+            "avg_power": 100.0,
+            "is_on": true,
+            "is_dimmable": false,
+            "dimming_level": null
+        }
+    ]
+}

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Settings - Energy Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Home Energy Dashboard</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('godmode') }}">Simulation Controls</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('settings') }}">Device Settings</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0"><i class="bi bi-gear-fill me-2"></i>Device Settings</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Manage your connected devices and add simulated devices.</p>
+                        
+                        <ul class="nav nav-tabs" id="deviceTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="real-devices-tab" data-bs-toggle="tab" data-bs-target="#real-devices" type="button" role="tab">Real Tapo Devices</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="mock-devices-tab" data-bs-toggle="tab" data-bs-target="#mock-devices" type="button" role="tab">Mock Devices</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="add-device-tab" data-bs-toggle="tab" data-bs-target="#add-device" type="button" role="tab">Add Device</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="power-sources-tab" data-bs-toggle="tab" data-bs-target="#power-sources" type="button" role="tab">Power Sources</button>
+                            </li>
+                        </ul>
+                        
+                        <div class="tab-content pt-3" id="deviceTabsContent">
+                            <div class="tab-pane fade show active" id="real-devices" role="tabpanel">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Type</th>
+                                                <th>IP Address</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="realDevicesList">
+                                            <!-- Real devices will be loaded here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div id="noRealDevices" class="alert alert-info">
+                                    <i class="bi bi-info-circle me-2"></i>No real Tapo devices configured. Add a device to get started.
+                                </div>
+                            </div>
+                            
+                            <div class="tab-pane fade" id="mock-devices" role="tabpanel">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Type</th>
+                                                <th>Average Power</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="mockDevicesList">
+                                            <!-- Mock devices will be loaded here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div id="noMockDevices" class="alert alert-info">
+                                    <i class="bi bi-info-circle me-2"></i>No mock devices configured. Add a device to get started.
+                                </div>
+                            </div>
+                            
+                            <div class="tab-pane fade" id="add-device" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card mb-4">
+                                            <div class="card-header">
+                                                <h5 class="mb-0">Add Real Tapo Device</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <form id="addRealDeviceForm">
+                                                    <div class="mb-3">
+                                                        <label for="realDeviceName" class="form-label">Device Name</label>
+                                                        <input type="text" class="form-control" id="realDeviceName" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="realDeviceType" class="form-label">Device Type</label>
+                                                        <select class="form-select" id="realDeviceType" required>
+                                                            <option value="">Select type...</option>
+                                                            <option value="plug">Smart Plug (P110/P100)</option>
+                                                            <option value="bulb">Smart Bulb (L530/L510)</option>
+                                                            <option value="switch">Smart Switch</option>
+                                                            <option value="other">Other</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="realDeviceIP" class="form-label">IP Address</label>
+                                                        <input type="text" class="form-control" id="realDeviceIP" placeholder="192.168.1.x" required>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary w-100">Add Real Device</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="card mb-4">
+                                            <div class="card-header">
+                                                <h5 class="mb-0">Add Mock Device</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <form id="addMockDeviceForm">
+                                                    <div class="mb-3">
+                                                        <label for="mockDeviceName" class="form-label">Device Name</label>
+                                                        <input type="text" class="form-control" id="mockDeviceName" required>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="mockDeviceType" class="form-label">Device Type</label>
+                                                        <select class="form-select" id="mockDeviceType" required>
+                                                            <option value="">Select type...</option>
+                                                            <option value="refrigerator">Refrigerator</option>
+                                                            <option value="tv">Television</option>
+                                                            <option value="washer">Washing Machine</option>
+                                                            <option value="dryer">Dryer</option>
+                                                            <option value="dishwasher">Dishwasher</option>
+                                                            <option value="oven">Oven</option>
+                                                            <option value="microwave">Microwave</option>
+                                                            <option value="air_conditioner">Air Conditioner</option>
+                                                            <option value="heater">Heater</option>
+                                                            <option value="light">Light</option>
+                                                            <option value="computer">Computer</option>
+                                                            <option value="other">Other</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="mockDevicePower" class="form-label">Average Power (Watts)</label>
+                                                        <input type="number" class="form-control" id="mockDevicePower" min="1" value="100" required>
+                                                    </div>
+                                                    <div class="mb-3 form-check">
+                                                        <input type="checkbox" class="form-check-input" id="mockDeviceDimmable">
+                                                        <label class="form-check-label" for="mockDeviceDimmable">Device is dimmable/adjustable</label>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary w-100">Add Mock Device</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-pane fade" id="power-sources" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="card mb-4">
+                                            <div class="card-header">
+                                                <h5 class="mb-0">Grid Settings</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <form id="gridSettingsForm">
+                                                    <div class="mb-3">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" id="gridEnabledSwitch" checked>
+                                                            <label class="form-check-label" for="gridEnabledSwitch">Enable Grid Connection</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="electricityRateInput" class="form-label">Electricity Rate ($/kWh)</label>
+                                                        <input type="number" class="form-control" id="electricityRateInput" min="0.01" step="0.01" value="0.15">
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary w-100">Save Grid Settings</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-4">
+                                        <div class="card mb-4">
+                                            <div class="card-header">
+                                                <h5 class="mb-0">Home Battery Settings</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <form id="homeBatterySettingsForm">
+                                                    <div class="mb-3">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" id="homeBatteryEnabledSwitch" checked>
+                                                            <label class="form-check-label" for="homeBatteryEnabledSwitch">Enable Home Battery</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="homeBatteryCapacityInput" class="form-label">Battery Capacity (kWh)</label>
+                                                        <input type="number" class="form-control" id="homeBatteryCapacityInput" min="1" step="0.1" value="10">
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary w-100">Save Home Battery Settings</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-4">
+                                        <div class="card mb-4">
+                                            <div class="card-header">
+                                                <h5 class="mb-0">EV Battery Settings</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <form id="carBatterySettingsForm">
+                                                    <div class="mb-3">
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" id="carBatteryEnabledSwitch">
+                                                            <label class="form-check-label" for="carBatteryEnabledSwitch">Enable EV Battery</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="carBatteryCapacityInput" class="form-label">Battery Capacity (kWh)</label>
+                                                        <input type="number" class="form-control" id="carBatteryCapacityInput" min="1" step="0.1" value="75">
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary w-100">Save EV Battery Settings</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h5 class="mb-0">Tapo Account Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="tapoAccountForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="tapoUsername" class="form-label">Tapo Username (Email)</label>
+                                        <input type="email" class="form-control" id="tapoUsername" value="{{ config.tapo_username }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="tapoPassword" class="form-label">Tapo Password</label>
+                                        <input type="password" class="form-control" id="tapoPassword" placeholder="Enter to change password">
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Account Settings</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+</body>
+</html>

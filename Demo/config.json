@@ -1,0 +1,25 @@
+{
+    "tapo_username": "kbposta99@gmail.com",
+    "tapo_password": "abc3256ABC3256",
+    "grid_enabled": true,
+    "home_battery_enabled": true,
+    "home_battery_capacity": 10.0,
+    "home_battery_level": 84,
+    "car_battery_enabled": true,
+    "car_battery_capacity": 75.0,
+    "car_battery_level": 50,
+    "car_connected": true,
+    "electricity_rate": 0.15,
+    "home_battery_mode": "in_use",
+    "car_battery_mode": "idle",
+    "power_distribution": {
+        "grid": 70,
+        "home_battery": 20,
+        "car_battery": 10
+    },
+    "power_priorities": [
+        "home_battery",
+        "grid",
+        "car_battery"
+    ]
+}

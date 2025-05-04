@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Home Energy Dashboard</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('godmode') }}">Simulation Controls</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('settings') }}">Device Settings</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid py-4">
+        <!-- Energy Overview Section - Compact Row -->
+        <div class="row mb-4">
+            <!-- Current Power Usage -->
+            <div class="col-md-3">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header">
+                        <h5 class="mb-0">Current Power Usage</h5>
+                    </div>
+                    <div class="card-body text-center">
+                        <div class="display-4 fw-bold text-primary mb-2" id="currentPower">--</div>
+                        <div class="h5 text-muted">Watts</div>
+                        <canvas id="powerGauge" class="mt-2" style="max-height: 150px;"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Power Sources -->
+            <div class="col-md-5">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header">
+                        <h5 class="mb-0">Power Sources</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="powerSourcesChart" style="max-height: 200px;"></canvas>
+                        
+                        <!-- Power Shortfall Indicator -->
+                        <div id="powerShortfall" class="alert alert-warning mt-3" style="display: none;">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            Power demand exceeds available supply by <span id="shortfallValue">0</span> W 
+                            (<span id="shortfallPercentage">0</span>% shortfall)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Energy Breakdown -->
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header">
+                        <h5 class="mb-0">Energy Breakdown</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Grid:</span>
+                            <span id="gridPower" class="fw-bold">--</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Home Battery:</span>
+                            <span id="homeBatteryPower" class="fw-bold">--</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>EV Battery:</span>
+                            <span id="carBatteryPower" class="fw-bold">--</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Daily Cost:</span>
+                            <span id="dailyCost" class="fw-bold">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Energy Controls Row -->
+        <div class="row mb-4">
+            <!-- Grid Power -->
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm h-100" id="gridCard">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Grid</h5>
+                        <span class="badge" id="gridStatus">Connected</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Electricity Rate:</span>
+                            <span id="electricityRate" class="fw-bold">--</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Current Usage:</span>
+                            <span id="gridCurrentUsage" class="fw-bold">--</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Available Power:</span>
+                            <span id="gridAvailablePower" class="fw-bold">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Home Battery -->
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm h-100" id="homeBatteryCard">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Home Battery</h5>
+                        <span class="badge" id="homeBatteryStatus">Enabled</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="progress mb-2" style="height: 20px;">
+                            <div id="homeBatteryLevel" class="progress-bar bg-success" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Capacity:</span>
+                            <span id="homeBatteryCapacity" class="fw-bold">--</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Energy Left:</span>
+                            <span id="homeBatteryEnergyLeft" class="fw-bold">--</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Current Usage:</span>
+                            <span id="homeBatteryCurrentUsage" class="fw-bold">--</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Max Output:</span>
+                            <span id="homeBatteryMaxOutput" class="fw-bold">--</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Max Input:</span>
+                            <span id="homeBatteryMaxInput" class="fw-bold">--</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Status:</span>
+                            <span id="homeBatteryMode" class="fw-bold">Idle</span>
+                        </div>
+                        <div class="btn-group w-100">
+                            <button id="homeBatteryChargeBtn" class="btn btn-sm btn-outline-primary">In Charge</button>
+                            <button id="homeBatteryUseBtn" class="btn btn-sm btn-outline-primary">In Use</button>
+                            <button id="homeBatteryIdleBtn" class="btn btn-sm btn-outline-primary">Idle</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- EV Battery -->
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm h-100" id="carBatteryCard">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">EV Battery</h5>
+                        <span class="badge" id="carBatteryStatus">Disabled</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="progress mb-2" style="height: 20px;">
+                            <div id="carBatteryLevel" class="progress-bar bg-info" role="progressbar" style="width: 80%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">80%</div>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Capacity:</span>
+                            <span id="carBatteryCapacityValue" class="fw-bold">--</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Energy Left:</span>
+                            <span id="carBatteryEnergyLeft" class="fw-bold">--</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Current Usage:</span>
+                            <span id="carBatteryCurrentUsage" class="fw-bold">--</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Max Output:</span>
+                            <span id="carBatteryMaxOutput" class="fw-bold">--</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Max Input:</span>
+                            <span id="carBatteryMaxInput" class="fw-bold">--</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Status:</span>
+                            <span id="carStatus" class="fw-bold">Disconnected</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span>Mode:</span>
+                            <span id="carBatteryMode" class="fw-bold">Idle</span>
+                        </div>
+                        <div class="btn-group w-100 mb-2">
+                            <button id="connectCarBtn" class="btn btn-sm btn-outline-primary">Connect</button>
+                            <button id="disconnectCarBtn" class="btn btn-sm btn-outline-primary" disabled>Disconnect</button>
+                        </div>
+                        <div class="btn-group w-100">
+                            <button id="carBatteryChargeBtn" class="btn btn-sm btn-outline-primary" disabled>In Charge</button>
+                            <button id="carBatteryUseBtn" class="btn btn-sm btn-outline-primary" disabled>In Use</button>
+                            <button id="carBatteryIdleBtn" class="btn btn-sm btn-outline-primary" disabled>Idle</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Energy Source Priority Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h5 class="mb-0">Energy Source Priority</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-3">Set the priority order for energy sources.</p>
+                        
+                        <div class="priority-selection mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="priority-label me-2">1st Priority:</span>
+                                <select class="form-select priority-select" id="firstPriority">
+                                    <option value="grid">Grid Power</option>
+                                    <option value="home_battery">Home Battery</option>
+                                    <option value="car_battery">EV Battery</option>
+                                </select>
+                            </div>
+                            
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="priority-label me-2">2nd Priority:</span>
+                                <select class="form-select priority-select" id="secondPriority">
+                                    <option value="grid">Grid Power</option>
+                                    <option value="home_battery" selected>Home Battery</option>
+                                    <option value="car_battery">EV Battery</option>
+                                </select>
+                            </div>
+                            
+                            <div class="d-flex align-items-center">
+                                <span class="priority-label me-2">3rd Priority:</span>
+                                <select class="form-select priority-select" id="thirdPriority">
+                                    <option value="grid">Grid Power</option>
+                                    <option value="home_battery">Home Battery</option>
+                                    <option value="car_battery" selected>EV Battery</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Historical Data & Devices Section -->
+        <div class="row mb-4">
+            <!-- Historical Energy Usage -->
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Historical Energy Usage</h5>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-outline-primary active" data-period="day">Day</button>
+                            <button class="btn btn-sm btn-outline-primary" data-period="week">Week</button>
+                            <button class="btn btn-sm btn-outline-primary" data-period="month">Month</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="historicalChart" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Devices Section -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Devices</h5>
+                        <a href="{{ url_for('settings') }}" class="btn btn-sm btn-outline-primary">Manage Devices</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Power</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="devicesList">
+                                    <!-- Devices will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
